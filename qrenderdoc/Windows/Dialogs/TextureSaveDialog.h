@@ -75,6 +75,8 @@ private slots:
 
   void on_saveCancelButtons_rejected();
 
+  void on_textureFlipExport_toggled(bool checked);
+
 private:
   Ui::TextureSaveDialog *ui;
 

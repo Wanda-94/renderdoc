@@ -627,6 +627,9 @@ It is an :class:`AlphaMapping` that controls what behaviour to use.
 
   DOCUMENT("The quality to use when saving to a ``JPG`` file. Valid values are between 1 and 100.");
   int jpegQuality = 90;
+
+  DOCUMENT("Export Y fliped texture data, now only use for PNG format export")
+  bool Flip = false;
 };
 
 DECLARE_REFLECTION_STRUCT(TextureSave);

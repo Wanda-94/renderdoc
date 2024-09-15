@@ -229,6 +229,8 @@ void TextureSaveDialog::on_fileFormat_currentIndexChanged(int index)
                              saveData.destType != FileType::EXR &&
                              saveData.destType != FileType::DDS);
 
+  ui->customExportGroup->setVisible(saveData.destType == FileType::PNG);
+
   bool noAlphaFormat = (saveData.destType == FileType::BMP || saveData.destType == FileType::JPG);
 
   ui->alphaMap->setEnabled(tex.format.compCount == 4 && noAlphaFormat);
@@ -708,4 +710,12 @@ void TextureSaveDialog::on_saveCancelButtons_accepted()
 void TextureSaveDialog::on_saveCancelButtons_rejected()
 {
   reject();
+}
+
+void TextureSaveDialog::on_textureFlipExport_toggled(bool checked)
+{
+
+    saveData.Flip = checked;
+
+    return;
 }

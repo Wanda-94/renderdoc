@@ -767,6 +767,12 @@ ResultDetails ReplayController::SaveTexture(const TextureSave &saveData, const r
 
   bool downcast = false;
 
+  // for now only support flip PNG foramt 
+  if (sd.destType != FileType::PNG)
+  {
+      sd.Flip = false;
+  }
+
   // don't support slice mappings for DDS - it supports slices natively
   if(sd.destType == FileType::DDS)
   {
@@ -1211,6 +1217,27 @@ ResultDetails ReplayController::SaveTexture(const TextureSave &saveData, const r
 
     numComps = 3;
     rowPitch = td.width * 3;
+  }
+
+  if (sd.Flip)
+  {
+      byte* flipData = new byte[td.width * td.height * (uint32_t)numComps];
+      for (uint32_t y = 0; y < td.height; y++)
+      {
+          for (uint32_t x = 0; x < td.width; x++)
+          {
+              uint32_t flipHeight = td.height - y - 1;
+              uint32_t sourceIndex = (y * td.width + x) * numComps;
+              uint32_t targetIndex = (flipHeight * td.width + x) * numComps;
+              for (uint32_t c = 0; c < (uint32_t)numComps; c++)
+              {
+                  flipData[targetIndex + c] = subdata[0][sourceIndex + c];
+              }
+          }
+      }
+
+      delete[] subdata[0];
+      subdata[0] = flipData;
   }
 
   FILE *f = FileIO::fopen(path, FileIO::WriteBinary);
